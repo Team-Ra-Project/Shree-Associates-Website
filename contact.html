@@ -10,6 +10,150 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LegalService",
+      "@id": "https://www.shreeassociates.in/#organization",
+      "name": "Shree Associates",
+      "url": "https://www.shreeassociates.in/",
+      "logo": "https://www.shreeassociates.in/images/logo.jpeg",
+      "image": "https://www.shreeassociates.in/images/logo.jpeg",
+      "email": "shree.associates.entp@gmail.com",
+      "foundingDate": "2006",
+      "founder": {
+        "@type": "Person",
+        "name": "Shrikant Prabhakar Ranjane"
+      },
+      "description": "Legal, society and property compliance consultancy offering society registration, audit and accounting, conveyance and deemed conveyance, CIDCO transfers, property registration, legal services and redevelopment consultancy.",
+      "areaServed": [
+        "Navi Mumbai",
+        "Panvel",
+        "Kamothe",
+        "Kharghar",
+        "Taloja",
+        "Belapur",
+        "Nerul",
+        "Vashi",
+        "Raigad",
+        "Mumbai"
+      ],
+      "location": [
+        {
+          "@id": "https://www.shreeassociates.in/ulwe.html#ulwe-office"
+        },
+        {
+          "@id": "https://www.shreeassociates.in/contact.html#kamothe-office"
+        },
+        {
+          "@id": "https://www.shreeassociates.in/contact.html#fort-office"
+        }
+      ]
+    },
+    {
+      "@type": "LegalService",
+      "@id": "https://www.shreeassociates.in/ulwe.html#ulwe-office",
+      "name": "Shree Associates — Ulwe Office",
+      "url": "https://www.shreeassociates.in/ulwe.html",
+      "parentOrganization": {
+        "@id": "https://www.shreeassociates.in/#organization"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Shop No. 2, Bhosale Tulip, Plot No. 13, Sec. 21",
+        "addressLocality": "Ulwe, Navi Mumbai",
+        "addressRegion": "Maharashtra",
+        "postalCode": "410206",
+        "addressCountry": "IN"
+      },
+      "telephone": "+91 99696 25914",
+      "email": "shree.associates.entp@gmail.com",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "18:00"
+      }
+    },
+    {
+      "@type": "LegalService",
+      "@id": "https://www.shreeassociates.in/contact.html#kamothe-office",
+      "name": "Shree Associates — Kamothe Office",
+      "url": "https://www.shreeassociates.in/contact.html",
+      "parentOrganization": {
+        "@id": "https://www.shreeassociates.in/#organization"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Kohinoor Residency CHS Ltd, Office No. 01, Plot No. 2, Sec. No-11, Opp. AXIS Bank",
+        "addressLocality": "Kamothe, Navi Mumbai",
+        "addressRegion": "Maharashtra",
+        "postalCode": "410209",
+        "addressCountry": "IN"
+      },
+      "telephone": "+91 97695 73939",
+      "email": "shree.associates.entp@gmail.com",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "18:00"
+      }
+    },
+    {
+      "@type": "LegalService",
+      "@id": "https://www.shreeassociates.in/contact.html#fort-office",
+      "name": "Shree Associates — Fort Office",
+      "url": "https://www.shreeassociates.in/contact.html",
+      "parentOrganization": {
+        "@id": "https://www.shreeassociates.in/#organization"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Off. No. 302, 3rd Floor, Bharat Insurance Bldg., Horniman Circle",
+        "addressLocality": "Fort, Mumbai",
+        "addressRegion": "Maharashtra",
+        "postalCode": "400001",
+        "addressCountry": "IN"
+      },
+      "telephone": "+91 98198 53939",
+      "email": "shree.associates.entp@gmail.com",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "18:00"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body data-page="contact">
 
@@ -33,11 +177,11 @@
       <div class="section-head fade-in">
         <p class="kicker">Visit us</p>
         <h2>Our Offices</h2>
-        <p>Visit us at any of our three locations across Navi Mumbai and Mumbai — open seven days a week.</p>
+        <p class="inline-links">Visit us at any of our three locations across Navi Mumbai and Mumbai — open seven days a week. Our Ulwe office is in Sector 21 — see our <a href="ulwe.html">services in Ulwe</a>.</p>
       </div>
 
       <div class="office-grid">
-        <div class="office-card fade-in">
+        <div class="office-card fade-in" id="kamothe-office">
           <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>Kamothe Office</h4>
           <p class="office-address">Kohinoor Residency CHS Ltd, Office No. 01, Plot No. 2, Sec. No-11, Opp. AXIS Bank, Kamothe, Navi Mumbai – 410209</p>
           <div class="office-meta">
@@ -50,20 +194,22 @@
           </div>
         </div>
 
-        <div class="office-card fade-in">
-          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>Ulwe Office</h4>
-          <p class="office-address">Shop No. 2, Bhosale Tulip, Plot No. 13, Sec. 21, Ulwe, Navi Mumbai – 410206</p>
+        <div class="office-card is-ulwe fade-in" id="ulwe-office">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z"/><circle cx="12" cy="9" r="2.5"/></svg>Ulwe Office</h4>
+          <p class="office-address"><a href="https://www.google.com/maps/search/?api=1&amp;query=Shop+No.+2%2C+Bhosale+Tulip%2C+Plot+No.+13%2C+Sec.+21%2C+Ulwe%2C+Navi+Mumbai+410206" target="_blank" rel="noopener">Shop No. 2, Bhosale Tulip, Plot No. 13, Sec. 21, Ulwe, Navi Mumbai – 410206</a></p>
+          <a class="office-more" href="ulwe.html">Society, legal &amp; property services in Ulwe</a>
           <div class="office-meta">
             <div><strong>Phone:</strong> <a href="tel:+919969625914">+91 99696 25914</a></div>
             <div><strong>Hours:</strong> Mon – Sun, 10:00 AM – 6:00 PM</div>
           </div>
           <div class="office-actions">
             <a href="tel:+919969625914" class="btn btn-secondary btn-sm ripple">Call</a>
-            <a href="https://www.google.com/maps/search/?api=1&amp;query=Shree+Associates+Ulwe+Navi+Mumbai" target="_blank" rel="noopener" class="btn btn-ghost btn-sm ripple">Get Directions</a>
+            <a href="#" class="btn btn-secondary btn-sm ripple" data-whatsapp data-wa-message="Hello Shree Associates, I would like to enquire about your services at the Ulwe office.">WhatsApp</a>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Shop+No.+2%2C+Bhosale+Tulip%2C+Plot+No.+13%2C+Sec.+21%2C+Ulwe%2C+Navi+Mumbai+410206" target="_blank" rel="noopener" class="btn btn-ghost btn-sm ripple">Get Directions</a>
           </div>
         </div>
 
-        <div class="office-card fade-in">
+        <div class="office-card fade-in" id="fort-office">
           <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>Fort Office</h4>
           <p class="office-address">Off. No. 302, 3rd Floor, Bharat Insurance Bldg., Horniman Circle, Fort, Mumbai – 400001</p>
           <div class="office-meta">
@@ -90,7 +236,7 @@
 
           <ul class="contact-details">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5v-13Zm2.2.5 7.8 5.7 7.8-5.7H4.2ZM4 7.6V18h16V7.6l-8 5.8-8-5.8Z"/></svg><span><strong>Email:</strong> <a href="mailto:shree.associates.entp@gmail.com">shree.associates.entp@gmail.com</a><br><span style="font-size:0.85rem;color:var(--slate);">Alt: shree.associates79@gmail.com</span></span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg><span><strong>Phone:</strong> <a href="tel:+919769573939">+91 97695 73939</a> / <a href="tel:+919769373939">+91 97693 73939</a></span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg><span><strong>Phone:</strong> <a href="tel:+919769573939">+91 97695 73939</a> / <a href="tel:+919769373939">+91 97693 73939</a><br><span style="font-size:0.85rem;color:var(--slate);">Ulwe office: <a href="tel:+919969625914">+91 99696 25914</a></span></span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span><strong>Hours:</strong> Mon – Sun, 10:00 AM – 6:00 PM</span></li>
           </ul>
 
@@ -122,9 +268,9 @@
             <input type="email" name="email" placeholder="you@example.com" required>
           </label>
           <label>
-            <span>Service / Subject</span>
-            <select name="service" id="serviceSelect">
-              <option value="">Select a service (optional)</option>
+            <span>Subject / Service</span>
+            <select name="service" id="serviceSelect" required>
+              <option value="">Select a subject / service</option>
               <option value="Society Registration">Society Registration</option>
               <option value="Society Audit &amp; Accounting">Society Audit &amp; Accounting</option>
               <option value="Conveyance / Deemed Conveyance">Conveyance / Deemed Conveyance</option>
@@ -139,9 +285,17 @@
             <span>Message</span>
             <textarea name="message" rows="4" placeholder="Tell us about your society, legal, or property matter" required></textarea>
           </label>
-          <button type="submit" class="btn btn-primary ripple full-width" id="submitBtn">
-            <span>Send Enquiry</span>
-          </button>
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary ripple full-width" id="whatsappBtn">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5Z"/><path d="M9 8.5c0 3.3 2.7 6 6 6l1.2-1.4-2-1-.9.7a3.4 3.4 0 0 1-1.6-1.6l.7-.9-1-2L9 8.5Z"/></svg>
+              <span>Send via WhatsApp</span>
+            </button>
+            <button type="button" class="btn btn-secondary ripple full-width" id="emailBtn">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <span>Send via Email</span>
+            </button>
+          </div>
+          <p class="form-hint">WhatsApp opens with your enquiry pre-filled — just press Send. Or send it straight to our inbox by email.</p>
           <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
       </div>

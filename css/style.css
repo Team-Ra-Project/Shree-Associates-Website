@@ -491,7 +491,6 @@ p{ margin:0 0 1em; max-width: 62ch; color: var(--slate); }
 .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus{
   outline:none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(168,29,34,0.12);
 }
-.hp-field{ position:absolute !important; left:-9999px !important; width:1px; height:1px; overflow:hidden; }
 .form-note{ margin: 14px 0 0; font-size:0.88rem; min-height: 1.2em; }
 .form-note.success{ color:#2E7D32; }
 .form-note.error{ color:#B3261E; }
@@ -875,4 +874,231 @@ p{ margin:0 0 1em; max-width: 62ch; color: var(--slate); }
   .back-to-top, .fab-whatsapp{ width:44px; height:44px; bottom:16px; }
   .back-to-top{ right:16px; }
   .fab-whatsapp{ left:16px; }
+}
+
+/* ==========================================================================
+   PROBLEMS WE SOLVE  ·  ULWE OFFICE  ·  LOCAL ADDITIONS
+   Problem → solution cards sit on a deep-maroon band (Home) or on the
+   parchment ground (Ulwe page), so the section reads as clearly different
+   from the Services grid while using the same red/brass brand tokens.
+   ========================================================================== */
+section[id]{ scroll-margin-top: 96px; }
+
+/* ---- Location pill (hero + Ulwe banner) ---- */
+.location-pill{
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:0.86rem; font-weight:600; color:var(--red-deep);
+  background:var(--paper); border:1px solid var(--line-strong);
+  border-radius:999px; padding:6px 14px 6px 11px; margin:0;
+}
+.location-pill svg{ width:15px; height:15px; color:var(--red); flex-shrink:0; }
+.hero-meta{ display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; margin-bottom:22px; }
+.hero-meta .hero-eyebrow{ margin-bottom:0; }
+.hero-title{ font-size: clamp(2.2rem, 2.3vw + 1.35rem, 3.25rem); }
+.hero-tagline{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  font-size:clamp(1.05rem, .6vw + .95rem, 1.3rem); color:var(--red-deep);
+  margin:0 0 14px; max-width:none;
+}
+.hero-copy .hero-actions{ margin-bottom:16px; }
+.hero-quick{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:44px; }
+
+/* ---- Why-choose-us image on Home (text is baked into the artwork, so it
+   is never cropped and is allowed to grow larger on small screens) ---- */
+.why-photo-wrap .about-photo{ background:var(--parchment-deep); }
+.why-photo-wrap .about-photo img{ transition: transform .9s var(--ease); }
+.why-photo-wrap .about-photo:hover img{ transform: scale(1.03); }
+
+/* ---- Problems We Solve ---- */
+.problems-dark{
+  position:relative; overflow:hidden; color:var(--paper);
+  background:
+    radial-gradient(760px circle at 10% 0%, rgba(255,255,255,0.08), transparent 60%),
+    linear-gradient(160deg, var(--red-deep), var(--red-ink));
+}
+.problems-dark::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1.4px);
+  background-size:24px 24px;
+}
+.problems-dark .container{ position:relative; z-index:1; }
+.problems-dark .section-head h2{ color:var(--paper); }
+.problems-dark .section-head p{ color:rgba(255,255,255,0.84); }
+.problems-dark .kicker{ color:var(--brass-soft); }
+.problems-dark .section-head{ max-width:760px; }
+.problems-tagline{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  font-size:clamp(1.15rem, 1vw + 1rem, 1.55rem); color:var(--brass-soft);
+  margin:18px 0 12px; max-width:none;
+}
+
+.problem-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.problem-card{
+  position:relative; overflow:hidden; display:flex; flex-direction:column;
+  background:var(--paper); color:var(--ink);
+  border:1px solid var(--line); border-radius:var(--radius-md);
+  padding:24px 22px 22px;
+}
+.problem-card::before{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
+  background:linear-gradient(180deg, var(--red), var(--brass));
+  transform:scaleY(0); transform-origin:top; transition:transform .4s var(--ease);
+}
+.problem-card:hover{ transform:translateY(-6px); box-shadow:0 26px 50px rgba(0,0,0,0.26); }
+.problem-card:hover::before{ transform:scaleY(1); }
+.problem-head{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.problem-icon{
+  width:44px; height:44px; flex-shrink:0; border-radius:50%;
+  border:1.5px solid var(--red); background:rgba(168,29,34,0.06);
+  display:flex; align-items:center; justify-content:center;
+  transition: background .3s var(--ease), transform .4s var(--ease);
+}
+.problem-icon svg{ width:21px; height:21px; color:var(--red); transition: color .3s var(--ease); }
+.problem-card:hover .problem-icon{ background:var(--red); transform:rotate(-6deg) scale(1.05); }
+.problem-card:hover .problem-icon svg{ color:var(--paper); }
+.problem-head h3{ font-size:1.02rem; line-height:1.3; margin:0; font-weight:700; }
+.problem-block{ padding:12px 14px; border-radius:10px; }
+.problem-block p{ margin:0; font-size:0.9rem; max-width:none; }
+.problem-label{ display:flex; align-items:center; gap:7px; font-weight:700; font-size:0.82rem; margin-bottom:6px; }
+.problem-label svg{ width:15px; height:15px; flex-shrink:0; }
+.problem-block--issue{ flex:1; background:var(--parchment); }
+.problem-block--issue .problem-label{ color:var(--slate); }
+.problem-block--issue .problem-label svg{ color:var(--brass); }
+.problem-block--issue p{ color:var(--slate); }
+.problem-block--solution{ background:rgba(168,29,34,0.06); }
+.problem-block--solution .problem-label{ color:var(--red-deep); }
+.problem-block--solution .problem-label svg{ color:var(--red); }
+.problem-block--solution p{ color:var(--ink); font-weight:500; }
+.problem-connector{ position:relative; display:flex; justify-content:center; height:36px; }
+.problem-connector::before{ content:''; position:absolute; top:0; bottom:0; left:50%; border-left:1.5px dashed var(--line-strong); }
+.problem-connector span{
+  position:relative; z-index:1; align-self:center; width:26px; height:26px; border-radius:50%;
+  background:var(--red); display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 0 4px var(--paper);
+}
+.problem-connector svg{ width:13px; height:13px; color:#fff; }
+.problem-card:hover .problem-connector span{ animation: arrowNudge .9s ease-in-out infinite; }
+@keyframes arrowNudge{ 0%,100%{ transform:translateY(-2px); } 50%{ transform:translateY(2px); } }
+
+.problems-foot{ margin-top:44px; padding-top:30px; border-top:1px solid rgba(255,255,255,0.16); text-align:center; }
+.problems-audience{ font-family:var(--font-display); font-size:clamp(1.05rem, .6vw + .95rem, 1.3rem); color:var(--paper); margin:0 auto 14px; max-width:none; }
+.area-chips{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 32px; }
+.area-chip{ font-size:0.82rem; padding:6px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.3); color:rgba(255,255,255,0.9); }
+.problems-cta h3{ color:var(--paper); margin:0 0 16px; }
+.btn-light{ background:var(--paper); color:var(--red-deep); }
+.btn-light:hover{ transform:translateY(-3px); box-shadow:0 16px 32px rgba(0,0,0,0.28); }
+.problems-cta .final-actions{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+
+/* ---- Ulwe office block (Home + Ulwe page) ---- */
+.ulwe-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:center; }
+.ulwe-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:24px; }
+.office-plaque{
+  position:relative; overflow:hidden; color:var(--paper);
+  background:linear-gradient(155deg, var(--red-deep), var(--red-ink));
+  border-radius:var(--radius-lg); padding:36px; box-shadow:var(--shadow-card);
+}
+.office-plaque::before{ content:''; position:absolute; inset:12px; border:1px dashed rgba(255,255,255,0.28); border-radius:14px; pointer-events:none; }
+.plaque-pin{ width:54px; height:54px; border-radius:50%; border:1.5px solid var(--brass-soft); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+.plaque-pin svg{ width:24px; height:24px; color:var(--brass-soft); }
+.office-plaque h3{ color:var(--paper); margin-bottom:2px; }
+.plaque-sub{ font-family:var(--font-display); font-style:italic; color:var(--brass-soft); margin:0 0 4px; max-width:none; }
+.plaque-list{ display:flex; flex-direction:column; gap:14px; margin-top:20px; position:relative; }
+.plaque-list li{ display:flex; gap:12px; align-items:flex-start; font-size:0.95rem; color:rgba(255,255,255,0.92); }
+.plaque-list svg{ width:18px; height:18px; margin-top:3px; color:var(--brass-soft); flex-shrink:0; }
+.plaque-list a{ color:var(--paper); font-weight:600; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(255,255,255,0.4); }
+.plaque-list a:hover{ text-decoration-color:var(--paper); }
+.office-card.is-ulwe{ border-color:var(--line-strong); box-shadow:var(--shadow-soft); }
+.office-card .office-more{ font-size:0.84rem; font-weight:600; color:var(--red-deep); margin:-6px 0 16px; display:inline-block; }
+.office-card .office-more:hover{ text-decoration:underline; }
+.office-address a{ color:inherit; text-decoration:underline; text-decoration-color:var(--line-strong); text-underline-offset:3px; }
+.office-address a:hover{ color:var(--red-deep); }
+
+.inline-links a{ color:var(--red-deep); font-weight:600; text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line-strong); }
+.inline-links a:hover{ text-decoration-color:var(--red); }
+.footer-local{ margin:0; font-size:0.85rem; color:rgba(255,255,255,0.72); max-width:none; }
+
+/* ---- Navigation: nine links need a tighter desktop rhythm and an earlier
+   switch to the drawer so nothing wraps or collides on tablets ---- */
+@media (max-width: 1180px){
+  .nav{ gap:20px; font-size:0.92rem; }
+  .nav-cta{ padding:10px 16px; }
+}
+@media (max-width: 980px){
+  .nav{
+    position:fixed; top:82px; left:0; right:0; bottom:0;
+    background:var(--parchment); flex-direction:column; align-items:flex-start;
+    padding:30px 28px; gap:6px; overflow-y:auto; font-size:1rem;
+    transform:translateX(100%); transition:transform .3s var(--ease);
+  }
+  .nav.open{ transform:translateX(0); }
+  .nav a{ width:100%; padding:14px 0; font-size:1.05rem; border-bottom:1px solid var(--line); opacity:0; transform:translateX(14px); }
+  .nav.open a{ opacity:1; transform:translateX(0); }
+  .nav a.nav-cta{ margin-top:14px; text-align:center; border-bottom:none; padding:14px 16px; }
+  .nav-toggle{ display:flex; }
+  .nav.open a:nth-child(1){ transition-delay:.04s; } .nav.open a:nth-child(2){ transition-delay:.08s; }
+  .nav.open a:nth-child(3){ transition-delay:.12s; } .nav.open a:nth-child(4){ transition-delay:.16s; }
+  .nav.open a:nth-child(5){ transition-delay:.2s; }  .nav.open a:nth-child(6){ transition-delay:.24s; }
+  .nav.open a:nth-child(7){ transition-delay:.28s; } .nav.open a:nth-child(8){ transition-delay:.32s; }
+  .nav.open a:nth-child(9){ transition-delay:.36s; }
+}
+
+@media (max-width: 1100px){
+  .problem-grid{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width: 1024px){
+  .ulwe-grid{ grid-template-columns:1fr; gap:32px; }
+  .why-photo-wrap{ max-width:520px !important; }
+}
+@media (max-width: 640px){
+  .problem-grid{ grid-template-columns:1fr; gap:16px; }
+  .problems-foot{ margin-top:32px; }
+  .why-photo-wrap{ max-width:100% !important; }
+  .office-plaque{ padding:28px 22px; }
+  .hero-quick{ margin-bottom:32px; }
+}
+@media (max-width: 480px){
+  .nav{ top:72px; }
+  .hero-meta{ gap:10px 12px; }
+}
+
+.about-photo picture{ display:block; width:100%; height:100%; }
+.office-card[id]{ scroll-margin-top:100px; }
+
+/* Once a revealed element has finished its entrance (main.js adds
+   .reveal-done), drop the stagger delay so hovering is instant, animate
+   the properties cards actually change on hover, and let each card
+   family's hover lift win over the reveal's resting transform. */
+.reveal-done{
+  transition-property: opacity, transform, box-shadow, border-color, background-color, padding-left !important;
+  transition-duration: .3s !important;
+  transition-delay: 0ms !important;
+}
+.reveal-done.service-card:hover, .reveal-done.team-card:hover, .reveal-done.office-card:hover,
+.reveal-done.review-card:hover, .reveal-done.testimonial-card:hover, .reveal-done.mini-office:hover{ transform: translateY(-5px); }
+.reveal-done.problem-card:hover{ transform: translateY(-6px); }
+
+/* Honeypot anti-spam field (see contact.html) */
+.hp-field{ position:absolute !important; left:-9999px !important; width:1px; height:1px; overflow:hidden; }
+
+/* ---- Mobile / tablet menu: full-height drawer ----
+   .site-header uses backdrop-filter, which turns the header into the containing block
+   for position:fixed children. That made the drawer's "bottom:0" resolve to the 82px
+   header, leaving only a sliver of space. Sizing the drawer with viewport units
+   (dvh) makes it fill the screen below the header regardless. */
+@media (max-width: 980px){
+  .nav{
+    top:82px; bottom:auto; height:calc(100vh - 82px); height:calc(100dvh - 82px);
+    -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+  }
+}
+@media (max-width: 480px){
+  .nav{ top:72px; height:calc(100vh - 72px); height:calc(100dvh - 72px); }
+}
+
+/* ---- Enquiry form: two action buttons + field error state ---- */
+.form-actions{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.form-hint{ margin:12px 0 0; font-size:0.82rem; color:var(--slate); line-height:1.5; }
+.contact-form [aria-invalid="true"]{ border-color:#B3261E !important; box-shadow:0 0 0 3px rgba(179,38,30,0.12); }
+@media (max-width: 520px){
+  .form-actions{ grid-template-columns:1fr; }
 }

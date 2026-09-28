@@ -9,13 +9,18 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Config ---------- */
-  const WHATSAPP_NUMBER = '919769573939'; // Shree Associates WhatsApp number (Kamothe office)
+  const WHATSAPP_NUMBER = '919769373939'; // Shree Associates WhatsApp number (Kamothe office)
   const CONTACT_EMAIL = 'shree.associates.entp@gmail.com';
-  // Base URL of the Spring Boot backend (see /backend). During local development the
-  // backend runs on http://localhost:8080; update API_BASE_URL when you deploy the
-  // backend to a real domain (e.g. https://api.shreeassociates.com).
-  const API_BASE_URL = window.SHREE_API_BASE_URL || 'http://localhost:8080';
-  const ENQUIRY_ENDPOINT = `${API_BASE_URL}/api/enquiries`; // falls back to mailto if unreachable
+
+  /* ---- Enquiry form configuration (frontend-only: no backend, no database) ----
+     WhatsApp: the enquiry form opens https://wa.me/<number> with the message pre-filled;
+     the visitor presses Send. Change the number here and nowhere else (digits only,
+     country code first, NO "+" sign).
+     Email: the form posts straight to Web3Forms, which delivers it to the Shree
+     Associates inbox registered with this access key. */
+  const ENQUIRY_WHATSAPP_NUMBER = '919769373939';
+  const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+  const WEB3FORMS_ACCESS_KEY = 'ec60b2e5-a409-47c4-bc78-6fa8c6b8ed3f';
 
   /* ---------- Sticky header + back-to-top visibility ---------- */
   const header = document.getElementById('siteHeader');
@@ -74,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
      Card grids get a "stamp settling into place" scale-reveal (fits the
      seal/registry motif); sequential lists (case studies, FAQ) keep a
      simple upward reveal so they read top-to-bottom. */
-  const scaleStaggerGroups = ['.service-grid', '.team-grid', '.office-grid', '.preview-grid-4'];
+  const scaleStaggerGroups = ['.service-grid', '.team-grid', '.office-grid', '.preview-grid-4', '.problem-grid'];
   const upStaggerGroups = ['.case-list', '.accordion', '.mission-grid'];
   scaleStaggerGroups.forEach(selector => {
     document.querySelectorAll(`${selector} > *`).forEach((child, i) => {
@@ -95,8 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
     revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          revealObserver.unobserve(entry.target);
+          const el = entry.target;
+          el.classList.add('in-view');
+          revealObserver.unobserve(el);
+          // After the entrance (delay + duration) finishes, switch to snappy hover transitions
+          const delay = parseInt(el.style.getPropertyValue('--delay'), 10) || 0;
+          setTimeout(() => el.classList.add('reveal-done'), delay + 850);
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
@@ -163,18 +172,21 @@ document.addEventListener('DOMContentLoaded', () => {
       moveIndicatorTo(current);
     });
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.tab;
-        tabs.forEach(t => { t.classList.toggle('active', t === tab); t.setAttribute('aria-selected', t === tab); });
-        panels.forEach(p => {
-          const show = p.dataset.panel === target;
-          p.classList.toggle('active', show);
-          p.hidden = !show;
-        });
-        moveIndicatorTo(tab);
+    const activateTab = (tab) => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => { t.classList.toggle('active', t === tab); t.setAttribute('aria-selected', t === tab); });
+      panels.forEach(p => {
+        const show = p.dataset.panel === target;
+        p.classList.toggle('active', show);
+        p.hidden = !show;
       });
-    });
+      moveIndicatorTo(tab);
+    };
+    tabs.forEach(tab => tab.addEventListener('click', () => activateTab(tab)));
+
+    // Deep links such as services.html#property open that category directly
+    const hashTab = Array.from(tabs).find(t => t.dataset.tab === window.location.hash.slice(1));
+    if (hashTab) requestAnimationFrame(() => activateTab(hashTab));
   }
 
   /* ---------- Animated stat counters (index.html) ---------- */
@@ -216,9 +228,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!btn) return;
     e.preventDefault();
     const service = btn.dataset.waService || 'general enquiry';
-    const message = service === 'general enquiry'
-      ? 'Hello Shree Associates, I would like to enquire about your legal/property/society services.'
-      : `Hello Shree Associates, I would like to enquire about ${service} services.`;
+    const message = btn.dataset.waMessage
+      ? btn.dataset.waMessage
+      : service === 'general enquiry'
+        ? 'Hello Shree Associates, I would like to enquire about your legal/property/society services.'
+        : `Hello Shree Associates, I would like to enquire about ${service} services.`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank', 'noopener');
   });
 
@@ -246,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'TEL;TYPE=WORK,VOICE:+91-97695-73939',
         'TEL;TYPE=WORK,VOICE:+91-97693-73939',
         'EMAIL:shree.associates.entp@gmail.com',
-        'ADR;TYPE=WORK:;;Kohinoor Residency CHS Ltd, Office No. 01, Plot No. 2, Sec. 11, Opp. AXIS Bank, Kamothe;Navi Mumbai;Maharashtra;410209;India',
+        'ADR;TYPE=WORK:;;Kohinoor Residency CHS Ltd, Office No. 01, Plot No. 2, Sec. No-11, Opp. AXIS Bank, Kamothe;Navi Mumbai;Maharashtra;410209;India',
         'URL:https://maps.app.goo.gl/RSpfndnPwmnnkJVf8',
         'END:VCARD'
       ].join('\n');
@@ -318,69 +332,138 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ---------- Contact form: real submission to backend, graceful fallback ---------- */
+  /* ---------- Contact form: WhatsApp + Email (Web3Forms), frontend-only ----------
+     Two explicit actions, both driven from JavaScript:
+       1. "Send via WhatsApp" -> opens WhatsApp with the enquiry pre-filled (visitor presses Send)
+       2. "Send via Email"    -> posts to Web3Forms, which emails Shree Associates
+     The form's native submit is always cancelled so nothing is ever sent twice. */
   const contactForm = document.getElementById('contactForm');
   const formNote = document.getElementById('formNote');
-  const submitBtn = document.getElementById('submitBtn');
+  const whatsappBtn = document.getElementById('whatsappBtn');
+  const emailBtn = document.getElementById('emailBtn');
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(contactForm);
-      const payload = {
-        name: formData.get('name')?.trim(),
-        email: formData.get('email')?.trim(),
-        phone: formData.get('phone')?.trim(),
-        service: formData.get('service')?.trim() || 'Not specified',
-        message: formData.get('message')?.trim(),
-        website: formData.get('website')?.trim() || '' // honeypot field, must stay empty — hidden from real users via CSS
+  if (contactForm && formNote && whatsappBtn && emailBtn) {
+    const EMAIL_LABEL = emailBtn.querySelector('span').textContent;
+    const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    let isSending = false;
+
+    const showNote = (text, type) => {
+      formNote.textContent = text;
+      formNote.className = type ? `form-note ${type}` : 'form-note';
+    };
+
+    const clearFieldErrors = () => {
+      contactForm.querySelectorAll('[aria-invalid="true"]').forEach(el => el.removeAttribute('aria-invalid'));
+    };
+    // Clear a field's error highlight as soon as the visitor edits it
+    contactForm.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', () => el.removeAttribute('aria-invalid'));
+      el.addEventListener('change', () => el.removeAttribute('aria-invalid'));
+    });
+
+    const readValues = () => {
+      const fd = new FormData(contactForm);
+      const get = (key) => (fd.get(key) || '').toString().trim();
+      return {
+        name: get('name'), phone: get('phone'), email: get('email'),
+        subject: get('service'), message: get('message'), honeypot: get('website')
       };
+    };
 
-      if (!payload.name || !payload.email || !payload.phone || !payload.message) {
-        formNote.textContent = 'Please fill in all required fields.';
-        formNote.className = 'form-note error';
+    // Returns true when valid; otherwise shows a specific message, highlights and focuses the field.
+    const validate = (v) => {
+      const fail = (fieldName, msg) => {
+        clearFieldErrors();
+        const field = contactForm.elements[fieldName];
+        if (field) { field.setAttribute('aria-invalid', 'true'); field.focus(); }
+        showNote(msg, 'error');
+        return false;
+      };
+      const phoneDigits = v.phone.replace(/\D/g, '');
+      if (!v.name) return fail('name', 'Please enter your full name.');
+      if (!v.phone) return fail('phone', 'Please enter your phone number.');
+      if (phoneDigits.length < 10 || phoneDigits.length > 15 || !/^[+\d\s\-().]+$/.test(v.phone)) {
+        return fail('phone', 'Please enter a valid phone number (at least 10 digits).');
+      }
+      if (!v.email) return fail('email', 'Please enter your email address.');
+      if (!EMAIL_PATTERN.test(v.email)) return fail('email', 'Please enter a valid email address, e.g. you@example.com.');
+      if (!v.subject) return fail('service', 'Please select a subject / service.');
+      if (!v.message) return fail('message', 'Please enter your message.');
+      clearFieldErrors();
+      return true;
+    };
+
+    // Native submit (e.g. pressing Enter in a field) is always cancelled — only the two buttons send.
+    contactForm.addEventListener('submit', (e) => e.preventDefault());
+
+    /* ----- 1. WhatsApp ----- */
+    whatsappBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isSending) return;
+      const v = readValues();
+      if (v.honeypot) return; // bot filled the hidden field — do nothing
+      if (!validate(v)) return;
+
+      const message =
+        `Hello! I'm ${v.name}.\n\n` +
+        `I need help with: ${v.subject}\n\n` +
+        `Phone: ${v.phone}\n` +
+        `Email: ${v.email}\n\n` +
+        `Details:\n${v.message}`;
+
+      const whatsappUrl = `https://wa.me/${ENQUIRY_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      showNote('WhatsApp opened with your enquiry. Please press Send to submit it.', 'success');
+
+      // Brief lock so a double-click can't open two WhatsApp tabs
+      whatsappBtn.disabled = true;
+      setTimeout(() => { whatsappBtn.disabled = false; }, 1500);
+    });
+
+    /* ----- 2. Email via Web3Forms ----- */
+    emailBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (isSending) return; // duplicate-submission guard
+      const v = readValues();
+      if (v.honeypot) { // bot: pretend success, send nothing
+        showNote('Thank you! Your enquiry has been submitted successfully. Our team will get back to you soon.', 'success');
         return;
       }
+      if (!validate(v)) return;
 
-      submitBtn.disabled = true;
-      submitBtn.querySelector('span').textContent = 'Sending…';
-      formNote.textContent = '';
-      formNote.className = 'form-note';
+      isSending = true;
+      emailBtn.disabled = true;
+      whatsappBtn.disabled = true;
+      emailBtn.querySelector('span').textContent = 'Sending...';
+      showNote('', '');
+
+      const formData = new FormData();
+      formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+      formData.append('name', v.name);
+      formData.append('email', v.email);
+      formData.append('phone', v.phone);
+      formData.append('subject', v.subject);
+      formData.append('message', v.message);
+      formData.append('from_name', 'Shree Associates Website');
 
       try {
-        const response = await fetch(ENQUIRY_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        let data = null;
-        try { data = await response.json(); } catch (_) { /* non-JSON error body */ }
-
-        if (!response.ok) {
-          // Server understood the request but rejected it (validation error, duplicate,
-          // rate limit, etc.) — show its message rather than falling back to email,
-          // since the enquiry itself may be invalid rather than the server being unreachable.
-          formNote.textContent = (data && data.message) || 'We could not submit your enquiry. Please check the form and try again.';
-          formNote.className = 'form-note error';
-          return;
+        const response = await fetch(WEB3FORMS_ENDPOINT, { method: 'POST', body: formData });
+        const data = await response.json();
+        if (response.ok && data.success) {
+          showNote('Thank you! Your enquiry has been submitted successfully. Our team will get back to you soon.', 'success');
+          contactForm.reset();
+        } else {
+          console.error('Web3Forms error:', data);
+          showNote('Something went wrong while sending your enquiry. Please try again or contact us directly.', 'error');
         }
-
-        formNote.textContent = (data && data.message) || 'Thank you. Your enquiry has been submitted successfully. Our team will get back to you soon.';
-        formNote.className = 'form-note success';
-        contactForm.reset();
       } catch (err) {
-        // Network-level failure (server unreachable, offline, CORS, timeout) — fall back to email.
-        const subject = encodeURIComponent(`Website Enquiry - Shree Associates (${payload.service})`);
-        const body = encodeURIComponent(
-          `Name: ${payload.name}\nEmail: ${payload.email}\nPhone: ${payload.phone}\nService: ${payload.service}\nMessage: ${payload.message}\nSubmitted: ${new Date().toISOString()}`
-        );
-        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-        formNote.textContent = "We couldn't reach our server, so we've opened an email for you to send instead — please hit send in your email app to complete your enquiry.";
-        formNote.className = 'form-note error';
+        console.error('Web3Forms request failed:', err);
+        showNote('Something went wrong while sending your enquiry. Please try again or contact us directly.', 'error');
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.querySelector('span').textContent = 'Send Enquiry';
+        isSending = false;
+        emailBtn.disabled = false;
+        whatsappBtn.disabled = false;
+        emailBtn.querySelector('span').textContent = EMAIL_LABEL;
       }
     });
   }

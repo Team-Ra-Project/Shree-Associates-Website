@@ -19,6 +19,7 @@
     { href: 'team.html', label: 'Team', key: 'team' },
     { href: 'reviews.html', label: 'Reviews', key: 'reviews' },
     { href: 'case-studies.html', label: 'Case Studies', key: 'case-studies' },
+    { href: 'ulwe.html', label: 'Ulwe', key: 'ulwe' },
     { href: 'contact.html', label: 'Contact', key: 'contact', cta: true }
   ];
 
@@ -53,6 +54,7 @@
         <span>Shree Associates</span>
       </div>
       <p class="footer-tagline">Legal, Society &amp; Property Compliance Consultant — trusted since 2006.</p>
+      <p class="footer-local">Serving Ulwe and Navi Mumbai with professional Society, Legal &amp; Property Services.</p>
       <nav class="footer-nav">
         ${NAV_LINKS.map(l => `<a href="${l.href}">${l.label}</a>`).join('')}
       </nav>
